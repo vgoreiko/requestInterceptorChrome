@@ -38,31 +38,40 @@
         </div>
         <div class="row">
             <label for="url-to-intercept">
-                Input url to substitute response:
+                Response to modify:
                 <div>
                     <input type="text" id="url-to-intercept">
                 </div>
             </label>
         </div>
-        <div class="row">
-            <label for="status-code">
-                Status Code:
-                <div>
-                    <input type="number" id="status-code"/>
-                </div>
-            </label>
-        </div>
+        <hr>
+        <section>
+            <h3>Params to change:</h3>
+
+            <div class="row">
+                <label for="status-code">
+                    Status Code:
+                    <div>
+                        <input type="number" id="status-code"/>
+                    </div>
+                </label>
+            </div>
+
+            <div class="row">
+                <label for="response">
+                    Response
+                    <div>
+                        <textarea type="text" id="response"></textarea>
+                    </div>
+                </label>
+            </div>
+        </section>
+       
+        <hr>
         <div class="row">
             <button type="button" id="clear-log">Clear log</button>
         </div>
-<!--        <div class="row">-->
-<!--            <label for="response">-->
-<!--                Response-->
-<!--                <div>-->
-<!--                    <textarea type="text" id="response"></textarea>-->
-<!--                </div>-->
-<!--            </label>-->
-<!--        </div>-->
+
     </section>
     <div id="container"></div>
 </body>

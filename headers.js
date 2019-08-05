@@ -3,7 +3,9 @@ var tabId = parseInt(window.location.search.substring(1));
 const elementIds = {
     enableCheckbox: 'enable-interceptor',
     clearLog: 'clear-log',
-    urlToIntercept: 'url-to-intercept'
+    urlToIntercept: 'url-to-intercept',
+    statusCode: 'status-code',
+    response: 'response'
 }
 
 window.addEventListener("load", function() {
@@ -47,17 +49,20 @@ function onEvent(debuggeeId, message, params) {
         requestDiv.appendChild(requestLine);
         document.getElementById("container").appendChild(requestDiv);
     } else if (message == "Network.responseReceived" && isTrackedUrl) {
-        appendResponse(params.requestId, params.response);
+        // appendResponse(params.requestId, params.response);
+        params.response.status = +getStatusCodeElementValue()
     }
 }
 
 function isOptions(params) {
     const isRequest = params.request
+    const isResponse = params.response
     if (isRequest) {
         return params.request.method === "OPTIONS"
-    } else {
+    } else if(isResponse) {
         return params.response.method === "OPTIONS"
     }
+    return false
 }
 
 function getIsTrackedUrl(params, filterUrlValue) {
@@ -118,6 +123,18 @@ function getUrlToInterceptElementValue() {
     const element = document.getElementById(elementIds.urlToIntercept)
     if(element) return element.value
     return null
+}
+
+function getStatusCodeElementValue() {
+    const element = document.getElementById(elementIds.statusCode)
+    if(element && element.value) return element.value
+    return 200
+}
+
+function getResponseElementValue() {
+    const element = document.getElementById(elementIds.response)
+    if(element && element.value) return element.value
+    return {}
 }
 
 function clearLog() {
