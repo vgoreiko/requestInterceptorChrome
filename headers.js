@@ -36,9 +36,24 @@ function onEvent(debuggeeId, message, params) {
                 {tabId},
                 "Network.getResponseBodyForInterception",
                 {interceptionId: params.interceptionId},
-                function(data){
-                    console.log(data)
-                    chrome.debugger.sendCommand({tabId:tabId}, "Network.continueInterceptedRequest", {interceptionId: params.interceptionId});
+                function(response){
+                    const bodyData = response.base64Encoded ? atob(response.body) : response.body;
+                    const newBody = getResponseElementValue()
+                    const statusCode = getStatusCodeElementValue()
+                    params.responseHeaders.status = statusCode
+
+                    const keys = Object.keys(params.responseHeaders)
+                    const headers = keys.map(key => `${key}: ${params.responseHeaders[key]}`)
+                    const modifiedHeaders = headers.join('\r\n')
+
+                    chrome.debugger.sendCommand(
+                        {tabId:tabId},
+                        "Network.continueInterceptedRequest",
+                        {
+                            interceptionId: params.interceptionId,
+                            rawResponse: btoa('HTTP/1.1 '+ statusCode + '\r\n' + modifiedHeaders + '\r\n\r\n' + newBody)
+                        }
+                        );
             })
         } else{
             chrome.debugger.sendCommand({tabId:tabId}, "Network.continueInterceptedRequest", {interceptionId: params.interceptionId});
@@ -164,7 +179,7 @@ function getStatusCodeElementValue() {
 function getResponseElementValue() {
     const element = document.getElementById(elementIds.response)
     if(element && element.value) return element.value
-    return {}
+    return ''
 }
 
 function clearLog() {
