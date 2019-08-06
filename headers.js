@@ -10,6 +10,10 @@ const elementIds = {
 
 window.addEventListener("load", function() {
     chrome.debugger.sendCommand({tabId:tabId}, "Network.enable");
+    chrome.debugger.sendCommand({tabId: tabId}, "Network.setRequestInterception", {patterns: [{
+            urlPattern: '*',
+            interceptionStage: 'HeadersReceived'
+        }]});
     chrome.debugger.onEvent.addListener(onEvent);
     bindClearClick()
 });
@@ -21,13 +25,25 @@ window.addEventListener("unload", function() {
 var requests = {};
 
 function onEvent(debuggeeId, message, params) {
-    const isEnabledInterceptor = getEnabledCheckboxValue()
     const filterUrlValue = getUrlToInterceptElementValue()
-    const isNeededTab = (tabId === debuggeeId.tabId)
     const isTrackedUrl = getIsTrackedUrl(params, filterUrlValue)
-    const isMethodOptions = isOptions(params)
 
-    if (!isNeededTab || !isEnabledInterceptor || !isTrackedUrl || isMethodOptions) return;
+    const neededRequestModification = needModification(message, params, debuggeeId)
+
+    if(message === "Network.requestIntercepted"){
+        if(neededRequestModification) {
+            const response = chrome.debugger.sendCommand(
+                {tabId},
+                "Network.getResponseBodyForInterception",
+                {interceptionId: params.interceptionId},
+                function(data){
+                    console.log(data)
+                    chrome.debugger.sendCommand({tabId:tabId}, "Network.continueInterceptedRequest", {interceptionId: params.interceptionId});
+            })
+        } else{
+            chrome.debugger.sendCommand({tabId:tabId}, "Network.continueInterceptedRequest", {interceptionId: params.interceptionId});
+        }
+    }
 
     if (message == "Network.requestWillBeSent") {
         var requestDiv = requests[params.requestId];
@@ -52,6 +68,20 @@ function onEvent(debuggeeId, message, params) {
         // appendResponse(params.requestId, params.response);
         params.response.status = +getStatusCodeElementValue()
     }
+}
+
+function modifyResponse(params) {
+
+}
+
+function needModification(message, params, debuggeeId) {
+    const isEnabledInterceptor = getEnabledCheckboxValue()
+    const filterUrlValue = getUrlToInterceptElementValue()
+    const isNeededTab = (tabId === debuggeeId.tabId)
+    const isTrackedUrl = getIsTrackedUrl(params, filterUrlValue)
+    const isMethodOptions = isOptions(params)
+
+    return (isNeededTab && isEnabledInterceptor && isTrackedUrl && !isMethodOptions)
 }
 
 function isOptions(params) {
