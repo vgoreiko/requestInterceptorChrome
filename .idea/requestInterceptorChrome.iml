@@ -10,5 +10,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Deloitte.ITS.SM.WebClient" />
     <orderEntry type="library" name="@types/chrome" level="application" />
+    <orderEntry type="library" name="@types/chrome" level="application" />
+    <orderEntry type="library" name="@types/chrome-apps" level="application" />
   </component>
 </module>
