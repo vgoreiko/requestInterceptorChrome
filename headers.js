@@ -5,7 +5,8 @@ const elementIds = {
     clearLog: 'clear-log',
     urlToIntercept: 'url-to-intercept',
     statusCode: 'status-code',
-    response: 'response'
+    response: 'response',
+    timeout: 'timeout'
 };
 const urlPatterns = [{
     urlPattern: '*',
@@ -23,7 +24,6 @@ window.addEventListener("load", function() {
 window.addEventListener("unload", function() {
     chrome.debugger.detach({tabId:tabId});
 });
-
 
 function onEvent(debuggeeId, message, params) {
     const filterUrlValue = getUrlToInterceptElementValue();
@@ -64,7 +64,9 @@ function onNetworkRequestWillBeSent(params){
 function onNetworkRequestIntercepted(message, params, debuggeeId){
     const neededRequestModification = needModification(message, params, debuggeeId);
     if(neededRequestModification) {
-        handleRequestModification(params)
+        setTimeout(function(){
+            handleRequestModification(params)
+        }, getTimeoutElementValue())
     }
     else{
         chrome.debugger.sendCommand(
@@ -195,6 +197,12 @@ function getResponseElementValue() {
     const element = document.getElementById(elementIds.response);
     if(element && element.value) return element.value;
     return ''
+}
+
+function getTimeoutElementValue() {
+    const element = document.getElementById(elementIds.timeout);
+    if(element && element.value) return element.value;
+    return 0
 }
 
 function clearLog() {
