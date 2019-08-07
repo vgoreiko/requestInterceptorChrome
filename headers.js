@@ -64,7 +64,7 @@ function onNetworkRequestWillBeSent(params){
 function onNetworkRequestIntercepted(message, params, debuggeeId){
     const neededRequestModification = needModification(message, params, debuggeeId);
     if(neededRequestModification) {
-        handleRequestModification()
+        handleRequestModification(params)
     }
     else{
         chrome.debugger.sendCommand(
