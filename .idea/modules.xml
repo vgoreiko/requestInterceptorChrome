@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://D:/magnet/Deloitte.ITS.SM.WebClient/.idea/Deloitte.ITS.SM.WebClient.iml" filepath="D:/magnet/Deloitte.ITS.SM.WebClient/.idea/Deloitte.ITS.SM.WebClient.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/requestInterceptorChrome.iml" filepath="$PROJECT_DIR$/.idea/requestInterceptorChrome.iml" />
     </modules>
   </component>
