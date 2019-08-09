@@ -12,5 +12,5 @@ function onAttach(tabId) {
     }
 
     chrome.windows.create(
-        {url: "headers.html?" + tabId, type: "popup", width: 800, height: 600});
+        {url: "index.html?" + tabId, type: "popup", width: 800, height: 600});
 }
