@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start": "extension-view/node_modules/.bin/react-scripts start",
-    "build": "INLINE_RUNTIME_CHUNK=false react-scripts build",
+    "build": "react-scripts build",
     "test": "extension-view/node_modules/.bin/react-scripts test",
     "eject": "extension-view/node_modules/.bin/react-scripts eject"
   },

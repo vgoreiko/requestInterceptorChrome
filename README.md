@@ -4,3 +4,4 @@
 4) https://chromedevtools.github.io/devtools-protocol/tot/Network
 5) https://github.com/huchenme/hacker-tab-extension
 6) chrome://extensions/
+7 https://facebook.github.io/create-react-app/docs/adding-typescript
