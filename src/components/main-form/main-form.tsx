@@ -3,14 +3,16 @@ import TopSection from "../top-section/top-section";
 import ParamsSection from "../params-section/Params-section";
 import FormState from "./form-state.model";
 
+const initState = {
+    enabled: true,
+    requestUrl: 'Bla',
+    statusCode: 200,
+    response: '{}',
+    timeout: 1000
+}
+
 export default class MainForm extends React.Component {
-    state: FormState = {
-            enabled: true,
-            requestUrl: 'Bla',
-            statusCode: 200,
-            response: '{}',
-            timeout: 1000
-    }
+    state:FormState = initState
 
     render() {
         return (
@@ -31,10 +33,19 @@ export default class MainForm extends React.Component {
                     changeTimeout={this.changeTimeout} />
                 <hr/>
                 <div className="row">
-                    <button type="button" id="clear-log">Clear log</button>
+                    <button type="button" id="clear-log" onClick={this.clearLog}>Clear log</button>
                 </div>
             </section>
         )
+    }
+
+    componentDidMount(): void {
+        console.log('DidMount')
+        // chrome bind here
+    }
+
+    clearLog = () => {
+
     }
 
     changeEnabled = (event: React.FormEvent<HTMLInputElement>) => {
