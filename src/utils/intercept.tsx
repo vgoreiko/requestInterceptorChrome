@@ -6,14 +6,6 @@ export interface Debuggee {
 
 const tabId = parseInt(window.location.search.substring(1));
 
-export const elementIds = {
-    enableCheckbox: 'enable-interceptor',
-    clearLog: 'clear-log',
-    urlToIntercept: 'url-to-intercept',
-    statusCode: 'status-code',
-    response: 'response',
-    timeout: 'timeout'
-};
 export const urlPatterns = [{
     urlPattern: '*',
     interceptionStage: 'HeadersReceived'
