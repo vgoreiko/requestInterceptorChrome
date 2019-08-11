@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <title>React App</title>
+    <title>Chrome request modify extension</title>
     <style>
       body {
         background-color: rgb(238, 238, 238);
@@ -23,75 +23,14 @@
       .logo {
         height: 250px;
         width: 250px;
-        background-image: url('512.png');
+        background-image: url('../images/512.png');
         background-repeat: no-repeat;
         background-size: 100%;
       }
     </style>
-    <script src="headers.js"></script>
   </head>
   <body>
     <noscript> You need to enable JavaScript to run this app.</noscript>
-    <div id="root">
-<!--    <div class="logo-container">-->
-<!--      <div class="logo"></div>-->
-<!--    </div>-->
-  </div>
-
-    <section id="form-section">
-      <div class="row">
-        <label for="enable-interceptor">
-          <input type="checkbox" id="enable-interceptor">Enable interceptor
-        </label>
-      </div>
-      <div class="row">
-        <label for="url-to-intercept">
-          Response to modify:
-          <div>
-            <input type="text" id="url-to-intercept">
-          </div>
-        </label>
-      </div>
-
-      <hr>
-      <section>
-        <h3>Params to change:</h3>
-
-        <div class="row">
-          <label for="status-code">
-            Status Code:
-            <div>
-              <input type="number" id="status-code"/>
-            </div>
-          </label>
-        </div>
-
-        <div class="row">
-          <label for="response">
-            Response
-            <div>
-              <textarea type="text" id="response"></textarea>
-            </div>
-          </label>
-        </div>
-
-        <div class="row">
-          <label for="timeout">
-            Timeout (ms):
-            <div>
-              <input type="number" id="timeout" value="1000"/>
-            </div>
-          </label>
-        </div>
-      </section>
-      <hr>
-
-      <div class="row">
-        <button type="button" id="clear-log">Clear log</button>
-      </div>
-
-    </section>
-    <div id="container"></div>
-
+    <div id="root"></div>
   </body>
 </html>

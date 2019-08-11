@@ -15,10 +15,12 @@ const urlPatterns = [{
 const requests = {};
 
 window.addEventListener("load", function() {
-    chrome.debugger.sendCommand({tabId:tabId}, "Network.enable");
-    chrome.debugger.sendCommand({tabId: tabId}, "Network.setRequestInterception", {patterns: urlPatterns});
-    chrome.debugger.onEvent.addListener(onEvent);
-    bindClearClick()
+    if(chrome.debugger){
+        chrome.debugger.sendCommand({tabId:tabId}, "Network.enable");
+        chrome.debugger.sendCommand({tabId: tabId}, "Network.setRequestInterception", {patterns: urlPatterns});
+        chrome.debugger.onEvent.addListener(onEvent);
+        bindClearClick()
+    }
 });
 
 window.addEventListener("unload", function() {

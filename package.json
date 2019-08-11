@@ -13,10 +13,10 @@
     "typescript": "3.5.3"
   },
   "scripts": {
-    "start": "extension-view/node_modules/.bin/react-scripts start",
+    "start": "node_modules/.bin/react-scripts start",
     "build": "react-scripts build",
-    "test": "extension-view/node_modules/.bin/react-scripts test",
-    "eject": "extension-view/node_modules/.bin/react-scripts eject"
+    "test": "node_modules/.bin/react-scripts test",
+    "eject": "node_modules/.bin/react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
