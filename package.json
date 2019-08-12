@@ -14,6 +14,7 @@
   },
   "scripts": {
     "start": "node_modules/.bin/react-scripts start",
+    "watch": "node scripts/watch.js",
     "build": "react-scripts build",
     "test": "node_modules/.bin/react-scripts test",
     "eject": "node_modules/.bin/react-scripts eject"

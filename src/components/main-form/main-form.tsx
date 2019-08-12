@@ -43,11 +43,11 @@ export default class MainForm extends React.Component {
     }
 
     componentDidMount(): void {
-        this.setState({
-            tabId: parseInt(window.location.search.substring(1))
-        })
-
         if(chrome && chrome.debugger) {
+            this.setState({
+                tabId: parseInt(window.location.search.substring(1))
+            })
+
             const tabId = this.state.tabId
             window.addEventListener("load", () => {
                 if(chrome.debugger){
