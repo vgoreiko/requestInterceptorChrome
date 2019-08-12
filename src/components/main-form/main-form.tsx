@@ -44,11 +44,12 @@ export default class MainForm extends React.Component {
 
     componentDidMount(): void {
         if(chrome && chrome.debugger) {
+            const tabId = parseInt(window.location.search.substring(1))
             this.setState({
-                tabId: parseInt(window.location.search.substring(1))
+                tabId
             })
 
-            const tabId = this.state.tabId
+
             window.addEventListener("load", () => {
                 if(chrome.debugger){
                     chrome.debugger.sendCommand({tabId}, "Network.enable");
@@ -58,7 +59,7 @@ export default class MainForm extends React.Component {
                 }
             });
             window.addEventListener("unload", function() {
-                chrome.debugger.detach({tabId:tabId});
+                chrome.debugger.detach({tabId});
             });
         }
     }
