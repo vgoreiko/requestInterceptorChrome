@@ -90,7 +90,7 @@ export default class MainForm extends React.Component {
     }
 
     onNetworkRequestIntercepted(message: string, params: any, debuggeeId: Debuggee) {
-        const requestUrls = this.state.paramsSections.map(param => params.requestUrl)
+        const requestUrls = this.state.paramsSections.map(param => param.requestUrl)
         const {enabled, tabId} = this.state
         const neededRequestModification = isRequestModificationNeeded({
             message,
