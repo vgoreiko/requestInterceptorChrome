@@ -72,6 +72,7 @@ export default class MainForm extends React.Component {
                 </div>
                 <div className="buttons-section">
                     <button type="button" className="add-params-section btn btn-primary" onClick={this.addSection}>Add section</button>
+                    <button type="button" className="remove-all-params btn btn-danger" onClick={this.removeAllSections}>Remove All Sections</button>
                 </div>
             </section>
         )
@@ -98,6 +99,12 @@ export default class MainForm extends React.Component {
         this.setState((prevState: FormState) => ({
             paramsSections: prevState.paramsSections.filter((_, i) => i !== index)
         }));
+    }
+
+    removeAllSections = () => {
+        this.setState({
+            paramsSections: []
+        })
     }
 
     changeEnabledSection = (event: React.FormEvent<HTMLInputElement>, id: number) => {
