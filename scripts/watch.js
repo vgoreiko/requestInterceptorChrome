@@ -9,6 +9,8 @@ const config = importCwd('react-scripts/config/webpack.config')('production')
 var entry = config.entry;
 var plugins = config.plugins;
 
+config.optimization.minimize = false
+
 entry = entry.filter(fileName => !fileName.match(/webpackHotDevClient/));
 plugins = plugins.filter(plugin => !(plugin instanceof webpack.HotModuleReplacementPlugin));
 
