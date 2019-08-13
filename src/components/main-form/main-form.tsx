@@ -23,22 +23,22 @@ export default class MainForm extends React.Component {
             <section className="form-section">
                 <TopSection enabled={this.state.enabled} changeEnabled={this.changeEnabled}/>
                 <div className="table-responsive">
-                    <table className="table table-striped table-light table-bordered table-hover">
+                    <table className="table table-striped table-light table-bordered">
                         <thead className="thead-light">
                         <tr>
-                            <td>#</td>
-                            <td>Remove</td>
-                            <td>SearchUrl</td>
-                            <td>StatusCode</td>
-                            <td>Response to return</td>
-                            <td>Timeout</td>
-                            <td>Enabled</td>
+                            <th>#</th>
+                            <th>Remove</th>
+                            <th>SearchUrl</th>
+                            <th>StatusCode</th>
+                            <th>Response to return</th>
+                            <th>Timeout</th>
+                            <th>Enabled</th>
                         </tr>
                         </thead>
                         <tbody>
                         {this.state.paramsSections.map((item, index) => {
                             return (
-                                <tr className="params-section" key={index}>
+                                <tr className={item.enabled ? 'table-success' : ''} key={index}>
                                     <td>{index + 1}</td>
                                     <td>
                                         <button type="button" className="btn btn-danger btn-sm" onClick={() => this.removeSection(index)}>X</button>

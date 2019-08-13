@@ -14,7 +14,7 @@ export default class TopSection extends Component<TopSectionPropsModel> {
                            defaultChecked={this.props.enabled}
                     />
                     <label htmlFor="enable-interceptor" className="form-check-label">
-                        Enable interceptor
+                        &nbsp; Enable interceptor
                     </label>
                 </div>
             </div>

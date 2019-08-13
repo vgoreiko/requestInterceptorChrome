@@ -2,6 +2,10 @@
   padding: 10px;
 }
 
+body {
+  background-color: #454d55;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
