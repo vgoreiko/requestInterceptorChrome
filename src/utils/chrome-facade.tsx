@@ -67,3 +67,15 @@ export function addEventListenerForOnEvent(tabId: number, callback: Function) {
             });
     });
 }
+
+export function saveToStorage(key: string, value: any) {
+    chrome.storage.local.set({[key]: value});
+}
+
+export async function getFromStorage(key: string) {
+    return new Promise((resolve) => {
+        chrome.storage.local.get(key, (settings) => {
+            resolve(settings[key])
+        });
+    })
+}

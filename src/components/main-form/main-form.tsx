@@ -10,10 +10,12 @@ import {
     addEventListenerForOnEvent,
     addEventListenerOnUnload,
     addEventListenersOnLoad,
-    continueInterception,
-    handleRequestModification,
+    continueInterception, getFromStorage,
+    handleRequestModification, saveToStorage,
 } from "../../utils/chrome-facade";
 import {defaultParamsSection, ParamsSectionState} from "../params-section/params-section-props.model";
+
+const saveStorageKey = 'requestInterceptorChromeStorage'
 
 export default class MainForm extends React.Component {
     state:FormState = initState
@@ -73,17 +75,19 @@ export default class MainForm extends React.Component {
                 <div className="buttons-section">
                     <button type="button" className="add-params-section btn btn-primary" onClick={this.addSection}>Add section</button>
                     <button type="button" className="remove-all-params btn btn-danger" onClick={this.removeAllSections}>Remove All Sections</button>
+                    <button type="button" className="remove-all-params btn btn-success float-right" onClick={this.saveSettings}>Save Settings</button>
                 </div>
             </section>
         )
     }
 
-    componentDidMount(): void {
-        if(chrome && chrome.debugger) {
+    async componentDidMount() {
+        if(chrome && chrome.debugger && chrome.storage) {
             const tabId = parseInt(window.location.search.substring(1))
-            this.setState({
-                tabId
-            })
+            let settings = await getFromStorage(saveStorageKey)
+            settings = settings ? settings : initState;
+            this.setState(settings as FormState)
+            this.setState({tabId})
             this.addChromeEventListeners(tabId)
         }
     }
@@ -105,6 +109,12 @@ export default class MainForm extends React.Component {
         this.setState({
             paramsSections: []
         })
+    }
+
+    saveSettings = () => {
+        const toSave = this.state
+        delete toSave.tabId
+        saveToStorage(saveStorageKey, toSave)
     }
 
     changeEnabledSection = (event: React.FormEvent<HTMLInputElement>, id: number) => {
