@@ -5,7 +5,9 @@ export interface TopSectionState {
 }
 
 export interface TopSectionProps {
-    changeEnabled: (event: React.FormEvent<HTMLInputElement>) => void,
+    changeEnabled: (checked: boolean,
+                    event: React.SyntheticEvent<MouseEvent | KeyboardEvent> | MouseEvent,
+                    id: string) => void,
 }
 
 export interface TopSectionPropsModel extends TopSectionState, TopSectionProps{}

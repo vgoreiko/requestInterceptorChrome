@@ -1,4 +1,8 @@
 .top-section {
     color: white;
     margin-bottom: 10px;
+    text-align: right;
+}
+label.enable-interceptor {
+    vertical-align: top;
 }

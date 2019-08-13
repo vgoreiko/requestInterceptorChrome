@@ -164,9 +164,9 @@ export default class MainForm extends React.Component {
         }
     }
 
-    changeEnabled = (event: React.FormEvent<HTMLInputElement>) => {
+    changeEnabled = (checked: boolean, event: React.SyntheticEvent<MouseEvent | KeyboardEvent> | MouseEvent, id: string) => {
         this.setState({
-                enabled: event.currentTarget.checked
+                enabled: checked
         })
     }
 
