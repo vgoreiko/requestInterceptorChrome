@@ -27,17 +27,10 @@ export function isOptions(params: any) {
 export function getIsTrackedUrl(params: any, filterUrlValue: string[]) {
     const isRequest = params.request;
     const toLowerCaseUrls = filterUrlValue.map(url => url.toLowerCase())
-    if (isRequest) {
-        const found = toLowerCaseUrls.findIndex(element => element.includes(params.request.url.toLowerCase())) !== -1
-        return (toLowerCaseUrls && params.request)
-            ? found
-            : false
-    } else {
-        const found = toLowerCaseUrls.findIndex(element => element.includes(params.response.url.toLowerCase())) !== -1
-        return (toLowerCaseUrls && params.response)
-            ? found
-            : false
-    }
+    const url = isRequest ? params.request.url.toLowerCase() : params.response.url.toLowerCase()
+    const foundMatch = toLowerCaseUrls.some(function(v){return url.indexOf(v) > 0})
+    console.log(foundMatch)
+    return foundMatch
 }
 
 export function isRequestModificationNeeded(options: NeedModificationOptions) {
@@ -46,6 +39,7 @@ export function isRequestModificationNeeded(options: NeedModificationOptions) {
     const isNeededTab = (options.tabId === options.debuggeeId.tabId);
     const isTrackedUrl = getIsTrackedUrl(options.params, filterUrlValue);
     const isMethodOptions = isOptions(options.params);
-
-    return (isNeededTab && isEnabledInterceptor && isTrackedUrl && !isMethodOptions)
+    const result = isNeededTab && isEnabledInterceptor && isTrackedUrl && !isMethodOptions
+    console.log(result)
+    return result
 }
