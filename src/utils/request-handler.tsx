@@ -29,7 +29,6 @@ export function getIsTrackedUrl(params: any, filterUrlValue: string[]) {
     const toLowerCaseUrls = filterUrlValue.map(url => url.toLowerCase())
     const url = isRequest ? params.request.url.toLowerCase() : params.response.url.toLowerCase()
     const foundMatch = toLowerCaseUrls.some(function(v){return url.indexOf(v) > 0})
-    console.log(foundMatch)
     return foundMatch
 }
 
@@ -40,6 +39,5 @@ export function isRequestModificationNeeded(options: NeedModificationOptions) {
     const isTrackedUrl = getIsTrackedUrl(options.params, filterUrlValue);
     const isMethodOptions = isOptions(options.params);
     const result = isNeededTab && isEnabledInterceptor && isTrackedUrl && !isMethodOptions
-    console.log(result)
     return result
 }
