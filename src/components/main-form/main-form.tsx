@@ -23,15 +23,16 @@ export default class MainForm extends React.Component {
             <section className="form-section">
                 <TopSection enabled={this.state.enabled} changeEnabled={this.changeEnabled}/>
                 <div className="table-responsive">
-                    <table className="table table-striped table-light table-bordered table-hover table-sm">
+                    <table className="table table-striped table-light table-bordered table-hover">
                         <thead className="thead-light">
                         <tr>
                             <td>#</td>
                             <td>Remove</td>
-                            <td>Response to modify</td>
-                            <td>Status code to return</td>
+                            <td>SearchUrl</td>
+                            <td>StatusCode</td>
                             <td>Response to return</td>
-                            <td>Response timeout</td>
+                            <td>Timeout</td>
+                            <td>Enabled</td>
                         </tr>
                         </thead>
                         <tbody>
@@ -48,10 +49,20 @@ export default class MainForm extends React.Component {
                                         statusCode={item.statusCode}
                                         timeout={item.timeout}
                                         id={index}
+                                        enabled={item.enabled}
                                         urlChanged={this.urlChanged}
                                         changeResponseValue={this.changeResponseValue}
                                         changeStatusCode={this.changeStatusCode}
                                         changeTimeout={this.changeTimeout}/>
+                                        <td>
+                                            <div className="form-check">
+                                                <input type="checkbox"
+                                                       className="form-check-input"
+                                                       id="enable-interceptor"
+                                                       onChange={(e) => this.changeEnabledSection(e, item.id)}
+                                                       defaultChecked={item.enabled}/>
+                                            </div>
+                                        </td>
                                 </tr>
 
                             )
@@ -89,8 +100,17 @@ export default class MainForm extends React.Component {
         }));
     }
 
+    changeEnabledSection = (event: React.FormEvent<HTMLInputElement>, id: number) => {
+        const newState = update(this.state, {
+            paramsSections: {[id]: {enabled: {$set: event.currentTarget.checked}}}
+        });
+        this.setState(newState)
+    }
+
     onNetworkRequestIntercepted(message: string, params: any, debuggeeId: Debuggee) {
-        const requestUrls = this.state.paramsSections.map(param => param.requestUrl)
+        const requestUrls = this.state.paramsSections
+            .filter(item => !item.enabled)
+            .map(param => param.requestUrl)
         const {enabled, tabId} = this.state
         const neededRequestModification = isRequestModificationNeeded({
             message,
@@ -170,4 +190,5 @@ export default class MainForm extends React.Component {
         });
         this.setState(newState)
     }
+
 }

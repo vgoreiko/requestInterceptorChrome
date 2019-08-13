@@ -5,7 +5,8 @@ export interface ParamsSectionState {
     response: string,
     timeout: number,
     requestUrl: string,
-    id: number
+    id: number,
+    enabled: boolean
 }
 export interface ParamsSectionProps {
     changeStatusCode: (event: React.FormEvent<HTMLInputElement>, id: number) => void
@@ -23,5 +24,6 @@ export const defaultParamsSection: ParamsSectionState = {
     response: '',
     timeout: 1000,
     requestUrl: 'buildings?',
-    id: 0
+    id: 0,
+    enabled: false
 }
