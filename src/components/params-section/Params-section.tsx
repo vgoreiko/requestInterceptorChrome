@@ -8,7 +8,7 @@ export default class ParamsSection extends React.Component<ParamsSectionPropsMod
             <>
                 <td>
                     <input type="text"
-                           className="url-to-intercept"
+                           className="url-to-intercept form-control"
                            value={this.props.requestUrl}
                            onChange={(e) => this.props.urlChanged(e, this.props.id)}/>
                 </td>
@@ -19,13 +19,13 @@ export default class ParamsSection extends React.Component<ParamsSectionPropsMod
                            value={this.props.statusCode}/>
                 </td>
                 <td>
-                        <textarea className="response"
+                        <textarea className="response form-control"
                                   value={this.props.response}
                                   onChange={(e) => this.props.changeResponseValue(e, this.props.id)}></textarea>
                 </td>
                 <td>
                     <input type="number"
-                           className="timeout"
+                           className="timeout form-control"
                            step="1000"
                            min="1000"
                            value={this.props.timeout}
