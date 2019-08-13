@@ -22,43 +22,45 @@ export default class MainForm extends React.Component {
         return (
             <section className="form-section">
                 <TopSection enabled={this.state.enabled} changeEnabled={this.changeEnabled}/>
-                <table className="table table-striped table-light table-bordered table-hover table-sm ">
-                    <thead className="thead-light">
-                    <tr>
-                        <td>#</td>
-                        <td>Remove</td>
-                        <td>Response to modify</td>
-                        <td>Status code to return</td>
-                        <td>Response to return</td>
-                        <td>Response timeout</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {this.state.paramsSections.map((item, index) => {
-                        return (
-                            <tr className="params-section" key={index}>
-                                <td>{index + 1}</td>
-                                <td>
-                                    <button type="button" onClick={() => this.removeSection(index)}>X</button>
-                                </td>
-                                <ParamsSection
-                                    requestUrl={item.requestUrl}
-                                    response={item.response}
-                                    statusCode={item.statusCode}
-                                    timeout={item.timeout}
-                                    id={index}
-                                    urlChanged={this.urlChanged}
-                                    changeResponseValue={this.changeResponseValue}
-                                    changeStatusCode={this.changeStatusCode}
-                                    changeTimeout={this.changeTimeout}/>
-                            </tr>
+                <div className="table-responsive">
+                    <table className="table table-striped table-light table-bordered table-hover table-sm">
+                        <thead className="thead-light">
+                        <tr>
+                            <td>#</td>
+                            <td>Remove</td>
+                            <td>Response to modify</td>
+                            <td>Status code to return</td>
+                            <td>Response to return</td>
+                            <td>Response timeout</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {this.state.paramsSections.map((item, index) => {
+                            return (
+                                <tr className="params-section" key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>
+                                        <button type="button" className="btn btn-danger btn-sm" onClick={() => this.removeSection(index)}>X</button>
+                                    </td>
+                                    <ParamsSection
+                                        requestUrl={item.requestUrl}
+                                        response={item.response}
+                                        statusCode={item.statusCode}
+                                        timeout={item.timeout}
+                                        id={index}
+                                        urlChanged={this.urlChanged}
+                                        changeResponseValue={this.changeResponseValue}
+                                        changeStatusCode={this.changeStatusCode}
+                                        changeTimeout={this.changeTimeout}/>
+                                </tr>
 
-                        )
-                    })}
-                    </tbody>
-                </table>
+                            )
+                        })}
+                        </tbody>
+                    </table>
+                </div>
                 <div className="buttons-section">
-                    <button type="button" className="add-params-section" onClick={this.addSection}>Add section</button>
+                    <button type="button" className="add-params-section btn btn-primary" onClick={this.addSection}>Add section</button>
                 </div>
             </section>
         )

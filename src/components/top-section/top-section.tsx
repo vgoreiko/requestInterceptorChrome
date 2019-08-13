@@ -6,13 +6,14 @@ export default class TopSection extends Component<TopSectionPropsModel> {
     render() {
         return (
             <div className="top-section">
-                <div className="row">
-                    <label htmlFor="enable-interceptor">
-                        <input type="checkbox"
-                               className="enable-interceptor"
-                               onChange={this.props.changeEnabled}
-                                defaultChecked={this.props.enabled}
-                        />
+                <div className="form-check">
+                    <input type="checkbox"
+                           className="form-check-input"
+                           id="enable-interceptor"
+                           onChange={this.props.changeEnabled}
+                           defaultChecked={this.props.enabled}
+                    />
+                    <label htmlFor="enable-interceptor" className="form-check-label">
                         Enable interceptor
                     </label>
                 </div>
