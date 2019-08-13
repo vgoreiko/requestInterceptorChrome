@@ -30,13 +30,14 @@ export function handleRequestModification(params: any, tabId: number, newBody: s
             const keys = Object.keys(params.responseHeaders);
             const headers = keys.map(key => `${key}: ${params.responseHeaders[key]}`);
             const modifiedHeaders = headers.join('\r\n');
+            const rawResponse=  btoa(unescape(encodeURIComponent('HTTP/1.1 ' + statusCode + '\r\n' + modifiedHeaders + '\r\n\r\n' + newBody)))
 
             chrome.debugger.sendCommand(
                 {tabId},
                 "Network.continueInterceptedRequest",
                 {
                     interceptionId: params.interceptionId,
-                    rawResponse: btoa('HTTP/1.1 ' + statusCode + '\r\n' + modifiedHeaders + '\r\n\r\n' + newBody)
+                    rawResponse: rawResponse
                 }
             );
         })

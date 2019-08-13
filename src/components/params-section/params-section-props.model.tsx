@@ -22,6 +22,6 @@ export const defaultParamsSection: ParamsSectionState = {
     statusCode: 200,
     response: '',
     timeout: 1000,
-    requestUrl: '',
+    requestUrl: 'buildings?',
     id: 0
 }
