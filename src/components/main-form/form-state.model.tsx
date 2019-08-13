@@ -1,6 +1,12 @@
-import {ParamsSectionState} from "../params-section/params-section-props.model";
-import {TopSectionState} from "../top-section/top-section-props.model";
+import {defaultParamsSection, ParamsSectionState} from "../params-section/params-section-props.model";
 
-export default interface FormState extends TopSectionState, ParamsSectionState {
-    tabId: number
+export default interface FormState {
+    tabId: number,
+    enabled: boolean,
+    paramsSections: ParamsSectionState[]
+}
+export const initState: FormState = {
+    enabled: false,
+    tabId: 0,
+    paramsSections: [defaultParamsSection]
 }

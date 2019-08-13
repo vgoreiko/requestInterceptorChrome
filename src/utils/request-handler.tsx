@@ -9,7 +9,7 @@ export interface NeedModificationOptions {
     params: any,
     debuggeeId: Debuggee,
     enabled: boolean,
-    requestUrl: string,
+    requestUrls: string[],
     tabId: number
 }
 
@@ -24,22 +24,23 @@ export function isOptions(params: any) {
     return false
 }
 
-export function getIsTrackedUrl(params: any, filterUrlValue: string) {
+export function getIsTrackedUrl(params: any, filterUrlValue: string[]) {
     const isRequest = params.request;
+    const toLowerCaseUrls = filterUrlValue.map(url => url.toLowerCase())
     if (isRequest) {
-        return (filterUrlValue && params.request)
-            ? params.request.url.toLowerCase().includes(filterUrlValue.toLowerCase())
+        return (toLowerCaseUrls && params.request)
+            ? toLowerCaseUrls.includes(params.request.url.toLowerCase())
             : true
     } else {
-        return (filterUrlValue && params.response)
-            ? params.response.url.toLowerCase().includes(filterUrlValue.toLowerCase())
+        return (toLowerCaseUrls && params.response)
+            ? toLowerCaseUrls.includes(params.response.url.toLowerCase())
             : true
     }
 }
 
 export function isRequestModificationNeeded(options: NeedModificationOptions) {
     const isEnabledInterceptor = options.enabled
-    const filterUrlValue = options.requestUrl
+    const filterUrlValue = options.requestUrls
     const isNeededTab = (options.tabId === options.debuggeeId.tabId);
     const isTrackedUrl = getIsTrackedUrl(options.params, filterUrlValue);
     const isMethodOptions = isOptions(options.params);

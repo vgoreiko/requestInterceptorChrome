@@ -1,24 +1,19 @@
 /*global chrome*/
 import React from "react"
+import update from 'immutability-helper';
+import './main-form.css'
 import TopSection from "../top-section/top-section";
 import ParamsSection from "../params-section/Params-section";
-import FormState from "./form-state.model";
+import FormState, {initState} from "./form-state.model";
 import {Debuggee, isRequestModificationNeeded} from "../../utils/request-handler";
 import {
     addEventListenerForOnEvent,
-    addEventListenerOnUnload, addEventListenersOnLoad,
+    addEventListenerOnUnload,
+    addEventListenersOnLoad,
     continueInterception,
     handleRequestModification,
 } from "../../utils/chrome-facade";
-
-const initState = {
-    enabled: true,
-    requestUrl: 'Colleagues',
-    statusCode: 403,
-    response: '{}',
-    timeout: 1000,
-    tabId: 0
-}
+import {defaultParamsSection, ParamsSectionState} from "../params-section/params-section-props.model";
 
 export default class MainForm extends React.Component {
     state:FormState = initState
@@ -28,22 +23,33 @@ export default class MainForm extends React.Component {
             <section className="form-section">
                 <TopSection
                     enabled={this.state.enabled}
-                    requestUrl={this.state.requestUrl}
-                    changeEnabled={this.changeEnabled}
-                    urlChanged={this.urlChanged}/>
-
-                <hr/>
-                <ParamsSection
-                    response={this.state.response}
-                    statusCode={this.state.statusCode}
-                    timeout={this.state.timeout}
-                    changeResponseValue={this.changeResponseValue}
-                    changeStatusCode={this.changeStatusCode}
-                    changeTimeout={this.changeTimeout} />
-                <hr/>
-                <div className="row">
-                    <button type="button" id="clear-log" onClick={this.clearLog}>Clear log</button>
-                </div>
+                    changeEnabled={this.changeEnabled}/>
+                    <hr/>
+                    <section className="params">
+                        {this.state.paramsSections.map((item, index) => {
+                            return (
+                                <section className="wrap-params-section" key={index}>
+                                    <p>Section number: <b>{index}</b></p>
+                                    <ParamsSection
+                                        requestUrl={item.requestUrl}
+                                        response={item.response}
+                                        statusCode={item.statusCode}
+                                        timeout={item.timeout}
+                                        id={index}
+                                        urlChanged={this.urlChanged}
+                                        changeResponseValue={this.changeResponseValue}
+                                        changeStatusCode={this.changeStatusCode}
+                                        changeTimeout={this.changeTimeout} />
+                                    <button type="button" onClick={() => this.removeSection(index)}>Remove section</button>
+                                    <hr/>
+                                </section>
+                            )
+                        })}
+                    </section>
+                    <div className="buttons-section">
+                        <button type="button" className="add-params-section" onClick={this.addSection}>Add section</button>
+                    </div>
+                    <hr/>
             </section>
         )
     }
@@ -54,26 +60,40 @@ export default class MainForm extends React.Component {
             this.setState({
                 tabId
             })
-            addEventListenerOnUnload(tabId)
-            addEventListenersOnLoad(tabId)
-            addEventListenerForOnEvent(tabId, this.onEvent.bind(this))
+            this.addChromeEventListeners(tabId)
         }
     }
 
+    addSection = () =>  {
+        const newId = this.state.paramsSections.length
+        const newSection = {...defaultParamsSection, id: newId}
+        const newState = update(this.state, {paramsSections: {$push: [newSection]}})
+        this.setState(newState)
+    }
+
+    removeSection = (index: number) => {
+        this.setState((prevState: FormState) => ({
+            paramsSections: prevState.paramsSections.filter((_, i) => i !== index)
+        }));
+    }
+
     onNetworkRequestIntercepted(message: string, params: any, debuggeeId: Debuggee) {
-        const {enabled, requestUrl, tabId} = this.state
+        const requestUrls = this.state.paramsSections.map(param => params.requestUrl)
+        const {enabled, tabId} = this.state
         const neededRequestModification = isRequestModificationNeeded({
             message,
             params,
             debuggeeId,
             enabled,
-            requestUrl,
+            requestUrls,
             tabId
         })
         if(neededRequestModification) {
+            const {response, statusCode, timeout} = this.getModificationResponseSettings(this.state.paramsSections)
+
             setTimeout(() => {
-                handleRequestModification(params, this.state.tabId, this.state.response, this.state.statusCode)
-            }, this.state.timeout)
+                handleRequestModification(params, this.state.tabId, response, statusCode)
+            }, timeout)
         }
         else{
             continueInterception({tabId: this.state.tabId, interceptionId: params.interceptionId})
@@ -86,8 +106,23 @@ export default class MainForm extends React.Component {
         }
     }
 
-    clearLog = () => {
+    addChromeEventListeners(tabId: number) {
+        addEventListenerOnUnload(tabId)
+        addEventListenersOnLoad(tabId)
+        addEventListenerForOnEvent(tabId, this.onEvent.bind(this))
+    }
 
+    getModificationResponseSettings(paramsSections: ParamsSectionState[]) {
+        const paramSection = paramsSections.find(section => section.requestUrl)
+        const response = paramSection ? paramSection.response : ''
+        const statusCode = paramSection ? paramSection.statusCode : 200
+        const timeout = paramSection ? paramSection.timeout : 0
+
+        return {
+            response,
+            statusCode,
+            timeout
+        }
     }
 
     changeEnabled = (event: React.FormEvent<HTMLInputElement>) => {
@@ -96,27 +131,31 @@ export default class MainForm extends React.Component {
         })
     }
 
-    urlChanged = (event: React.FormEvent<HTMLInputElement>) => {
-        this.setState({
-                requestUrl: event.currentTarget.value
-        })
+    urlChanged = (event: React.FormEvent<HTMLInputElement>, id: number) => {
+        const newState = update(this.state, {
+            paramsSections: {[id]: {requestUrl: {$set: event.currentTarget.value}}}
+        });
+        this.setState(newState)
     }
 
-    changeStatusCode = (event: React.FormEvent<HTMLInputElement>) => {
-        this.setState({
-            statusCode: event.currentTarget.value
-        })
+    changeStatusCode = (event: React.FormEvent<HTMLInputElement>, id: number) => {
+        const newState = update(this.state, {
+            paramsSections: {[id]: {statusCode: {$set: +event.currentTarget.value}}}
+        });
+        this.setState(newState)
     }
 
-    changeResponseValue = (event: React.FormEvent<HTMLTextAreaElement>) => {
-        this.setState({
-            response: event.currentTarget.value
-        })
+    changeResponseValue = (event: React.FormEvent<HTMLTextAreaElement>, id: number) => {
+        const newState = update(this.state, {
+            paramsSections: {[id]: {response: {$set: event.currentTarget.value}}}
+        });
+        this.setState(newState)
     }
 
-    changeTimeout = (event: React.FormEvent<HTMLInputElement>) => {
-        this.setState({
-            timeout: event.currentTarget.value
-        })
+    changeTimeout = (event: React.FormEvent<HTMLInputElement>, id: number) => {
+        const newState = update(this.state, {
+            paramsSections: {[id]: {timeout: {$set: +event.currentTarget.value}}}
+        });
+        this.setState(newState)
     }
 }

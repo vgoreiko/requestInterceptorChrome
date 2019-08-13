@@ -6,7 +6,19 @@ export default class ParamsSection extends React.Component<ParamsSectionPropsMod
     render() {
         return (
             <section className="params-section">
-                <h3>Params to change:</h3>
+                <div className="row">
+                    <label htmlFor="url-to-intercept">
+                        <b>Response to modify:</b>
+                        <div>
+                            <input type="text"
+                                   className="url-to-intercept"
+                                   value={this.props.requestUrl}
+                                   onChange={(e) => this.props.urlChanged(e, this.props.id)}
+                            />
+                        </div>
+                    </label>
+                </div>
+                <p><b>Params to change:</b></p>
 
                 <div className="row">
                     <label htmlFor="status-code">
@@ -14,7 +26,7 @@ export default class ParamsSection extends React.Component<ParamsSectionPropsMod
                         <div>
                             <input type="number"
                                    className="status-code"
-                                   onChange={this.props.changeStatusCode}
+                                   onChange={(e) => this.props.changeStatusCode(e, this.props.id)}
                                    value={this.props.statusCode}/>
                         </div>
                     </label>
@@ -26,7 +38,7 @@ export default class ParamsSection extends React.Component<ParamsSectionPropsMod
                         <div>
                             <textarea className="response"
                                       value={this.props.response}
-                                      onChange={this.props.changeResponseValue}></textarea>
+                                      onChange={(e) => this.props.changeResponseValue(e, this.props.id)}></textarea>
                         </div>
                     </label>
                 </div>
@@ -39,7 +51,7 @@ export default class ParamsSection extends React.Component<ParamsSectionPropsMod
                                    className="timeout"
                                    step="1000"
                                    value={this.props.timeout}
-                                   onChange={this.props.changeTimeout}
+                                   onChange={(e) => this.props.changeTimeout(e, this.props.id)}
                             />
                         </div>
                     </label>

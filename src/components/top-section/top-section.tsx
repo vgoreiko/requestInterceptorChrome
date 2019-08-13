@@ -16,19 +16,6 @@ export default class TopSection extends Component<TopSectionPropsModel> {
                         Enable interceptor
                     </label>
                 </div>
-
-                <div className="row">
-                    <label htmlFor="url-to-intercept">
-                        Response to modify:
-                        <div>
-                            <input type="text"
-                                   className="url-to-intercept"
-                                    value={this.props.requestUrl}
-                                   onChange={this.props.urlChanged}
-                            />
-                        </div>
-                    </label>
-                </div>
             </div>
         )
     }
