@@ -28,15 +28,15 @@ export function getIsTrackedUrl(params: any, filterUrlValue: string[]) {
     const isRequest = params.request;
     const toLowerCaseUrls = filterUrlValue.map(url => url.toLowerCase())
     if (isRequest) {
-        const found = toLowerCaseUrls.findIndex(element => element.includes(params.request.url.toLowerCase()))
+        const found = toLowerCaseUrls.findIndex(element => element.includes(params.request.url.toLowerCase())) !== -1
         return (toLowerCaseUrls && params.request)
-            ? !!found
-            : true
+            ? found
+            : false
     } else {
-        const found = toLowerCaseUrls.findIndex(element => element.includes(params.response.url.toLowerCase()))
+        const found = toLowerCaseUrls.findIndex(element => element.includes(params.response.url.toLowerCase())) !== -1
         return (toLowerCaseUrls && params.response)
-            ? !!found
-            : true
+            ? found
+            : false
     }
 }
 
