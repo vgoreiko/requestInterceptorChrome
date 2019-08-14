@@ -48,11 +48,9 @@ export function detachChromeDebugger(tabId: number) {
 }
 
 export function addEventListenersOnLoad(tabId: number, callback: Function) {
-    console.log('export function addEventListenersOnLoad(tabId: number, callback: Function) {')
             chrome.debugger.sendCommand({tabId}, "Network.enable");
             chrome.debugger.sendCommand({tabId}, "Network.setRequestInterception", {patterns: urlPatterns});
             chrome.debugger.onEvent.addListener((debuggeeId: Debuggee, message: string, params: any) => {
-                console.log(debuggeeId, message, params)
                 callback(debuggeeId, message, params)
             });
 }

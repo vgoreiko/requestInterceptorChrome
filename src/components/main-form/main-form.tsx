@@ -125,7 +125,7 @@ export default class MainForm extends React.Component {
             tabId
         })
         if(neededRequestModification) {
-            const {response, statusCode, timeout} = this.getModificationResponseSettings(this.state.paramsSections)
+            const {response, statusCode, timeout} = this.getModificationResponseSettings(this.state.paramsSections, params.request.url)
 
             setTimeout(() => {
                 handleRequestModification(params, this.state.tabId, response, statusCode)
@@ -137,7 +137,6 @@ export default class MainForm extends React.Component {
     }
 
     onEvent = (debuggeeId: Debuggee, message: string, params: any) => {
-        console.log(message)
         if(message === "Network.requestIntercepted"){
             this.onNetworkRequestIntercepted(message, params, debuggeeId)
         }
@@ -146,13 +145,17 @@ export default class MainForm extends React.Component {
     addChromeEventListeners(tabId: number) {
         addEventListenerOnUnload(tabId)
         addEventListenersOnLoad(tabId, (debuggeeId: Debuggee, message: string, params: any) => {
-            console.log('addEventListenersOnLoad(tabId, (debuggeeId: Debuggee, message: string, params: any) =>')
+            console.log(debuggeeId, message, params)
             this.onEvent(debuggeeId, message, params)
         })
     }
 
-    getModificationResponseSettings(paramsSections: ParamsSectionState[]) {
-        const paramSection = paramsSections.find(section => section.requestUrl)
+    getModificationResponseSettings(paramsSections: ParamsSectionState[], requestUrl: string) {
+        const paramSection = paramsSections.find((section) => {
+            if(requestUrl.toLowerCase().includes(section.requestUrl.toLowerCase())){
+                return section
+            }
+        })
         const response = paramSection ? paramSection.response : ''
         const statusCode = paramSection ? paramSection.statusCode : 200
         const timeout = paramSection ? paramSection.timeout : 0
