@@ -8,6 +8,12 @@ interface Edit {
     updated_src: any,
 }
 
+const customStyles = {
+    content : {
+        padding                   : '0',
+    }
+};
+
 Modal.setAppElement('#root')
 
 export default class ParamsSection extends React.Component<ParamsSectionPropsModel> {
@@ -19,9 +25,8 @@ export default class ParamsSection extends React.Component<ParamsSectionPropsMod
 
     render() {
         const modalContent =
-            <section>
-                <ReactJson src={this.state.modalContent} onEdit={(edit) => this.onEdit(edit)}/>
-                <button className="save-button btn btn-primary" onClick={this.saveModalResult}>Save changes</button>
+            <section className="modal-content-custom">
+                <ReactJson theme="monokai" src={this.state.modalContent} onEdit={(edit) => this.onEdit(edit)}/>
             </section>
 
         return (
@@ -43,11 +48,12 @@ export default class ParamsSection extends React.Component<ParamsSectionPropsMod
                          <Modal isOpen={this.state.modalIsOpen}
                                 onRequestClose={this.closeModal}
                                 onAfterOpen={this.afterOpenModal}
+                                style={customStyles}
                                 contentLabel="JSON view modal">
 
                              {!this.state.jsonParseError ? modalContent : <h1>JSON parse error</h1>}
                              <button className="close-button btn btn-dark" onClick={this.closeModal}>X</button>
-
+                             <button className="save-button btn btn-success" onClick={this.saveModalResult}>Save changes</button>
                          </Modal>
 
                          <button type="button" className="toggler btn btn-info" onClick={this.toggleModalWithJson}>i</button>
