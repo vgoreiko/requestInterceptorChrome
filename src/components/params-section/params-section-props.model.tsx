@@ -20,8 +20,8 @@ export interface ParamsSectionPropsModel extends ParamsSectionState, ParamsSecti
 
 export const defaultParamsSection: ParamsSectionState = {
     statusCode: 200,
-    response: '',
+    response: '[]',
     timeout: 1000,
-    requestUrl: 'buildings?',
+    requestUrl: 'colleagues',
     enabled: true
 }

@@ -7,7 +7,6 @@ import ParamsSection from "../params-section/Params-section";
 import FormState, {initState} from "./form-state.model";
 import {Debuggee, isRequestModificationNeeded} from "../../utils/request-handler";
 import {
-    addEventListenerForOnEvent,
     addEventListenerOnUnload,
     addEventListenersOnLoad,
     continueInterception, getFromStorage,
@@ -114,7 +113,7 @@ export default class MainForm extends React.Component {
 
     onNetworkRequestIntercepted(message: string, params: any, debuggeeId: Debuggee) {
         const requestUrls = this.state.paramsSections
-            .filter(item => !item.enabled)
+            .filter(item => item.enabled)
             .map(param => param.requestUrl)
         const {enabled, tabId} = this.state
         const neededRequestModification = isRequestModificationNeeded({
@@ -137,7 +136,8 @@ export default class MainForm extends React.Component {
         }
     }
 
-    onEvent(debuggeeId: Debuggee, message: string, params: any) {
+    onEvent = (debuggeeId: Debuggee, message: string, params: any) => {
+        console.log(message)
         if(message === "Network.requestIntercepted"){
             this.onNetworkRequestIntercepted(message, params, debuggeeId)
         }
@@ -145,8 +145,10 @@ export default class MainForm extends React.Component {
 
     addChromeEventListeners(tabId: number) {
         addEventListenerOnUnload(tabId)
-        addEventListenersOnLoad(tabId)
-        addEventListenerForOnEvent(tabId, this.onEvent.bind(this))
+        addEventListenersOnLoad(tabId, (debuggeeId: Debuggee, message: string, params: any) => {
+            console.log('addEventListenersOnLoad(tabId, (debuggeeId: Debuggee, message: string, params: any) =>')
+            this.onEvent(debuggeeId, message, params)
+        })
     }
 
     getModificationResponseSettings(paramsSections: ParamsSectionState[]) {

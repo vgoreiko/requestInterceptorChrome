@@ -47,24 +47,19 @@ export function detachChromeDebugger(tabId: number) {
     chrome.debugger.detach({tabId});
 }
 
-export function addEventListenersOnLoad(tabId: number) {
-    window.addEventListener("load", () => {
+export function addEventListenersOnLoad(tabId: number, callback: Function) {
+    console.log('export function addEventListenersOnLoad(tabId: number, callback: Function) {')
             chrome.debugger.sendCommand({tabId}, "Network.enable");
             chrome.debugger.sendCommand({tabId}, "Network.setRequestInterception", {patterns: urlPatterns});
-    });
+            chrome.debugger.onEvent.addListener((debuggeeId: Debuggee, message: string, params: any) => {
+                console.log(debuggeeId, message, params)
+                callback(debuggeeId, message, params)
+            });
 }
 
 export function addEventListenerOnUnload(tabId: number) {
     window.addEventListener("unload", function() {
         detachChromeDebugger(tabId);
-    });
-}
-
-export function addEventListenerForOnEvent(tabId: number, callback: Function) {
-    window.addEventListener("load", () => {
-            chrome.debugger.onEvent.addListener(function(debuggeeId: Debuggee, message: string, params: any) {
-                callback(debuggeeId, message, params)
-            });
     });
 }
 
