@@ -151,11 +151,7 @@ export default class MainForm extends React.Component {
     }
 
     getModificationResponseSettings(paramsSections: ParamsSectionState[], requestUrl: string) {
-        const paramSection = paramsSections.find((section) => {
-            if(requestUrl.toLowerCase().includes(section.requestUrl.toLowerCase())){
-                return section
-            }
-        })
+        const paramSection = this.getSectionByUrl(paramsSections, requestUrl)
         const response = paramSection ? paramSection.response : ''
         const statusCode = paramSection ? paramSection.statusCode : 200
         const timeout = paramSection ? paramSection.timeout : 0
@@ -202,4 +198,11 @@ export default class MainForm extends React.Component {
         this.setState(newState)
     }
 
+    private getSectionByUrl(paramsSections: ParamsSectionState[], url: string) {
+        return paramsSections.find((section) => {
+            if(url.toLowerCase().includes(section.requestUrl.toLowerCase())){
+                return section
+            }
+        })
+    }
 }
