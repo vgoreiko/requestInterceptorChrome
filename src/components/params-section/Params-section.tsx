@@ -1,8 +1,22 @@
 import React from 'react';
 import './Params-section.css';
 import {ParamsSectionPropsModel} from "./params-section-props.model";
+import ReactJson from 'react-json-view'
+import Modal from 'react-modal';
+
+interface Edit {
+    updated_src: any,
+}
+
+Modal.setAppElement('#root')
 
 export default class ParamsSection extends React.Component<ParamsSectionPropsModel> {
+    state = {
+        modalIsOpen: false,
+        modalContent: {},
+        jsonParseError: false
+    }
+
     render() {
         return (
             <>
@@ -19,9 +33,23 @@ export default class ParamsSection extends React.Component<ParamsSectionPropsMod
                            value={this.props.statusCode}/>
                 </td>
                 <td>
-                        <textarea className="response form-control"
-                                  value={this.props.response}
-                                  onChange={this.props.changeResponseValue}></textarea>
+                     <div className="with-modal">
+                         <textarea className="response form-control"
+                                   value={this.props.response}
+                                   onChange={this.props.changeResponseValue}></textarea>
+
+                         <Modal isOpen={this.state.modalIsOpen}
+                                onRequestClose={this.closeModal}
+                                onAfterOpen={this.afterOpenModal}
+                                contentLabel="JSON view modal">
+
+                             <ReactJson src={this.state.modalContent} onEdit={(edit) => this.onEdit(edit)}/>
+                             <button className="close-button btn btn-dark" onClick={this.closeModal}>X</button>
+                             <button className="save-button btn btn-primary" onClick={this.saveModalResult}>Save changes</button>
+                         </Modal>
+
+                         <button type="button" className="toggler btn btn-info" onClick={this.toggleModalWithJson}>i</button>
+                     </div>
                 </td>
                 <td>
                     <input type="number"
@@ -33,6 +61,53 @@ export default class ParamsSection extends React.Component<ParamsSectionPropsMod
                 </td>
             </>
         )
+    }
+
+    closeModal = () => {
+        this.setState({
+            modalIsOpen: false,
+            jsonParseError: false,
+            modalContent: {}
+        })
+    }
+
+    toggleModalWithJson = () =>  {
+        const toggled = !this.state.modalIsOpen
+        this.setState({
+            modalIsOpen: toggled
+        })
+    }
+
+    afterOpenModal = () => {
+        let toJson
+        try{
+            toJson = JSON.parse(this.props.response)
+        } catch (e) {
+            toJson = ''
+            this.setState({
+                jsonParseError: true
+            })
+        }
+        this.setState({
+            modalContent: toJson
+        })
+    }
+
+    saveModalResult = () => {
+        this.props.changeResponseValueExplicit(JSON.stringify(this.state.modalContent))
+
+        this.setState({
+            modalIsOpen: false,
+            modalContent: {},
+            jsonParseError: false
+        })
+    }
+
+    onEdit(edit: Edit){
+        console.log(edit)
+        this.setState({
+            modalContent: edit.updated_src
+        })
     }
 }
 

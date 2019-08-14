@@ -44,6 +44,7 @@ export default class MainForm extends React.Component {
                                         urlChanged={(e) => this.urlChanged(e, index)}
                                         changeResponseValue={(e) => this.changeResponseValue(e, index)}
                                         changeStatusCode={(e) => this.changeStatusCode(e, index)}
+                                        changeResponseValueExplicit={(e) => this.changeResponseValueExplicit(e, index)}
                                         changeTimeout={(e) => this.changeTimeout(e, index)}/>
                                         <td>
                                             <div className="form-check">
@@ -187,6 +188,13 @@ export default class MainForm extends React.Component {
     changeResponseValue = (event: React.FormEvent<HTMLTextAreaElement>, id: number) => {
         const newState = update(this.state, {
             paramsSections: {[id]: {response: {$set: event.currentTarget.value}}}
+        });
+        this.setState(newState)
+    }
+
+    changeResponseValueExplicit = (event: string, id: number) => {
+        const newState = update(this.state, {
+            paramsSections: {[id]: {response: {$set: event}}}
         });
         this.setState(newState)
     }

@@ -1,3 +1,29 @@
 .btn-sm, .btn-group-sm > .btn {
     font-size: 0.675rem;
 }
+.with-modal {
+    position: relative;
+    padding: 5px;
+}
+
+.toggler.btn {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 12px;
+    height: 14px;
+    width: 14px;
+    display: block;
+    line-height: 10px;
+    padding: 0;
+}
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+.save-button{
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+}

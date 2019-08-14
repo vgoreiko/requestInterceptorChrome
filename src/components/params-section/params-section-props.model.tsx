@@ -12,6 +12,7 @@ export interface ParamsSectionProps {
     changeResponseValue: (event: React.FormEvent<HTMLTextAreaElement>) => void
     changeTimeout: (event: React.FormEvent<HTMLInputElement>) => void
     urlChanged: (event: React.FormEvent<HTMLInputElement>) => void
+    changeResponseValueExplicit: (event: string) => void
 }
 
 export interface ParamsSectionPropsModel extends ParamsSectionState, ParamsSectionProps{
