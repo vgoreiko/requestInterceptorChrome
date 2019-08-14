@@ -18,6 +18,12 @@ export default class ParamsSection extends React.Component<ParamsSectionPropsMod
     }
 
     render() {
+        const modalContent =
+            <section>
+                <ReactJson src={this.state.modalContent} onEdit={(edit) => this.onEdit(edit)}/>
+                <button className="save-button btn btn-primary" onClick={this.saveModalResult}>Save changes</button>
+            </section>
+
         return (
             <>
                 <td>
@@ -43,9 +49,9 @@ export default class ParamsSection extends React.Component<ParamsSectionPropsMod
                                 onAfterOpen={this.afterOpenModal}
                                 contentLabel="JSON view modal">
 
-                             <ReactJson src={this.state.modalContent} onEdit={(edit) => this.onEdit(edit)}/>
+                             {!this.state.jsonParseError ? modalContent : <h1>JSON parse error</h1>}
                              <button className="close-button btn btn-dark" onClick={this.closeModal}>X</button>
-                             <button className="save-button btn btn-primary" onClick={this.saveModalResult}>Save changes</button>
+
                          </Modal>
 
                          <button type="button" className="toggler btn btn-info" onClick={this.toggleModalWithJson}>i</button>
