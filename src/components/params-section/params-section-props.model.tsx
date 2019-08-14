@@ -5,14 +5,13 @@ export interface ParamsSectionState {
     response: string,
     timeout: number,
     requestUrl: string,
-    id: number,
     enabled: boolean
 }
 export interface ParamsSectionProps {
-    changeStatusCode: (event: React.FormEvent<HTMLInputElement>, id: number) => void
-    changeResponseValue: (event: React.FormEvent<HTMLTextAreaElement>, id: number) => void
-    changeTimeout: (event: React.FormEvent<HTMLInputElement>, id: number) => void
-    urlChanged: (event: React.FormEvent<HTMLInputElement>, id: number) => void
+    changeStatusCode: (event: React.FormEvent<HTMLInputElement>) => void
+    changeResponseValue: (event: React.FormEvent<HTMLTextAreaElement>) => void
+    changeTimeout: (event: React.FormEvent<HTMLInputElement>) => void
+    urlChanged: (event: React.FormEvent<HTMLInputElement>) => void
 }
 
 export interface ParamsSectionPropsModel extends ParamsSectionState, ParamsSectionProps{
@@ -24,6 +23,5 @@ export const defaultParamsSection: ParamsSectionState = {
     response: '',
     timeout: 1000,
     requestUrl: 'buildings?',
-    id: 0,
-    enabled: false
+    enabled: true
 }

@@ -14,6 +14,7 @@ import {
     handleRequestModification, saveToStorage,
 } from "../../utils/chrome-facade";
 import {defaultParamsSection, ParamsSectionState} from "../params-section/params-section-props.model";
+import MainFormThead from "../main-form-thead/main-form-thead";
 
 const saveStorageKey = 'requestInterceptorChromeStorage'
 
@@ -26,17 +27,7 @@ export default class MainForm extends React.Component {
                 <TopSection enabled={this.state.enabled} changeEnabled={this.changeEnabled}/>
                 <div className="table-responsive">
                     <table className="table table-striped table-light table-bordered">
-                        <thead className="thead-light">
-                        <tr>
-                            <th>#</th>
-                            <th>Remove</th>
-                            <th>SearchUrl</th>
-                            <th>StatusCode</th>
-                            <th>Response to return</th>
-                            <th>Timeout</th>
-                            <th>Enabled</th>
-                        </tr>
-                        </thead>
+                        <MainFormThead/>
                         <tbody>
                         {this.state.paramsSections.map((item, index) => {
                             return (
@@ -50,23 +41,20 @@ export default class MainForm extends React.Component {
                                         response={item.response}
                                         statusCode={item.statusCode}
                                         timeout={item.timeout}
-                                        id={index}
                                         enabled={item.enabled}
-                                        urlChanged={this.urlChanged}
-                                        changeResponseValue={this.changeResponseValue}
-                                        changeStatusCode={this.changeStatusCode}
-                                        changeTimeout={this.changeTimeout}/>
+                                        urlChanged={(e) => this.urlChanged(e, index)}
+                                        changeResponseValue={(e) => this.changeResponseValue(e, index)}
+                                        changeStatusCode={(e) => this.changeStatusCode(e, index)}
+                                        changeTimeout={(e) => this.changeTimeout(e, index)}/>
                                         <td>
                                             <div className="form-check">
                                                 <input type="checkbox"
                                                        className="form-check-input"
-                                                       id="enable-interceptor"
-                                                       onChange={(e) => this.changeEnabledSection(e, item.id)}
+                                                       onChange={(e) => this.changeEnabledSection(e, index)}
                                                        defaultChecked={item.enabled}/>
                                             </div>
                                         </td>
                                 </tr>
-
                             )
                         })}
                         </tbody>
@@ -174,9 +162,10 @@ export default class MainForm extends React.Component {
         }
     }
 
-    changeEnabled = (checked: boolean, event: React.SyntheticEvent<MouseEvent | KeyboardEvent> | MouseEvent, id: string) => {
+    changeEnabled = () => {
+        const toggled = !this.state.enabled
         this.setState({
-                enabled: checked
+                enabled: toggled
         })
     }
 

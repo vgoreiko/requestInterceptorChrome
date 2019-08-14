@@ -6,7 +6,7 @@ export default interface FormState {
     paramsSections: ParamsSectionState[]
 }
 export const initState: FormState = {
-    enabled: false,
+    enabled: true,
     tabId: 0,
     paramsSections: [defaultParamsSection]
 }
