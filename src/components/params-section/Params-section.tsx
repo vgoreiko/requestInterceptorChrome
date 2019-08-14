@@ -11,6 +11,7 @@ interface Edit {
 const customStyles = {
     content : {
         padding                   : '0',
+        backgroundColor: '#212529'
     }
 };
 
