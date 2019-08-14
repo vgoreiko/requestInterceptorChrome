@@ -27,3 +27,11 @@
     bottom: 15px;
     right: 15px;
 }
+
+.form-control.width-sm {
+    width: 100px;
+}
+input.form-check-input {
+    height: 18px;
+    width: 18px;
+}

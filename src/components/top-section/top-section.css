@@ -1,7 +1,8 @@
 .top-section {
-    color: white;
-    margin-bottom: 10px;
+    padding-bottom: 10px;
     text-align: right;
+    color: white;
+    justify-content: flex-end;
 }
 label.enable-interceptor {
     vertical-align: top;

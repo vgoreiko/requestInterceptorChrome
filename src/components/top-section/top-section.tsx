@@ -6,7 +6,7 @@ import Switch from "react-switch";
 export default class TopSection extends Component<TopSectionPropsModel> {
     render() {
         return (
-            <div className="top-section">
+            <div className="top-section navbar navbar-dark bg-dark">
                 <div className="form-check">
                     <label htmlFor="enable-interceptor" className="form-check-label enable-interceptor">
                         {this.props.enabled ? 'Disable' : 'Enable'} interception

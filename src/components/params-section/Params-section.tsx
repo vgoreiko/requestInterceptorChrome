@@ -32,15 +32,11 @@ export default class ParamsSection extends React.Component<ParamsSectionPropsMod
                            value={this.props.requestUrl}
                            onChange={this.props.urlChanged}/>
                 </td>
-                <td>
-                    <input type="number"
-                           className="status-code"
-                           onChange={this.props.changeStatusCode}
-                           value={this.props.statusCode}/>
-                </td>
+
                 <td>
                      <div className="with-modal">
                          <textarea className="response form-control"
+                                   cols={25}
                                    value={this.props.response}
                                    onChange={this.props.changeResponseValue}></textarea>
 
@@ -57,9 +53,17 @@ export default class ParamsSection extends React.Component<ParamsSectionPropsMod
                          <button type="button" className="toggler btn btn-info" onClick={this.toggleModalWithJson}>i</button>
                      </div>
                 </td>
+
                 <td>
                     <input type="number"
-                           className="timeout form-control"
+                           className="status-code width-sm form-control"
+                           onChange={this.props.changeStatusCode}
+                           value={this.props.statusCode}/>
+                </td>
+
+                <td>
+                    <input type="number"
+                           className="timeout form-control width-sm"
                            step="1000"
                            min="1000"
                            value={this.props.timeout}

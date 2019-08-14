@@ -25,16 +25,13 @@ export default class MainForm extends React.Component {
             <section className="form-section">
                 <TopSection enabled={this.state.enabled} changeEnabled={this.changeEnabled}/>
                 <div className="table-responsive">
-                    <table className="table table-striped table-light table-bordered">
+                    <table className="table table-striped table-dark table-bordered">
                         <MainFormThead/>
                         <tbody>
                         {this.state.paramsSections.map((item, index) => {
                             return (
-                                <tr className={item.enabled ? 'table-success' : ''} key={index}>
+                                <tr key={index} className={item.enabled ? 'bg-success' : ''}>
                                     <td>{index + 1}</td>
-                                    <td>
-                                        <button type="button" className="btn btn-danger btn-sm" onClick={() => this.removeSection(index)}>X</button>
-                                    </td>
                                     <ParamsSection
                                         requestUrl={item.requestUrl}
                                         response={item.response}
@@ -46,14 +43,19 @@ export default class MainForm extends React.Component {
                                         changeStatusCode={(e) => this.changeStatusCode(e, index)}
                                         changeResponseValueExplicit={(e) => this.changeResponseValueExplicit(e, index)}
                                         changeTimeout={(e) => this.changeTimeout(e, index)}/>
-                                        <td>
-                                            <div className="form-check">
-                                                <input type="checkbox"
-                                                       className="form-check-input"
-                                                       onChange={(e) => this.changeEnabledSection(e, index)}
-                                                       defaultChecked={item.enabled}/>
-                                            </div>
-                                        </td>
+                                    <td>
+                                        <div className="form-check">
+                                            <input type="checkbox"
+                                                   className="form-check-input"
+                                                   onChange={(e) => this.changeEnabledSection(e, index)}
+                                                   defaultChecked={item.enabled}/>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button type="button" className="btn btn-danger btn-sm"
+                                                onClick={() => this.removeSection(index)}>X
+                                        </button>
+                                    </td>
                                 </tr>
                             )
                         })}
