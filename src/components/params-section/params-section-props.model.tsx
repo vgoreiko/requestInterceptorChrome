@@ -24,5 +24,5 @@ export const defaultParamsSection: ParamsSectionState = {
     response: '{"property":"example"}',
     timeout: 1000,
     requestUrl: 'someUrl',
-    enabled: false
+    enabled: true
 }
