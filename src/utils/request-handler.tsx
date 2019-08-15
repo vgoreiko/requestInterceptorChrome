@@ -34,6 +34,7 @@ export function getIsTrackedUrl(params: any, filterUrlValue: string[]) {
 
 export function isRequestModificationNeeded(options: NeedModificationOptions) {
     const isEnabledInterceptor = options.enabled
+    if(!isEnabledInterceptor) return false
     const filterUrlValue = options.requestUrls
     const isNeededTab = (options.tabId === options.debuggeeId.tabId);
     const isTrackedUrl = getIsTrackedUrl(options.params, filterUrlValue);
