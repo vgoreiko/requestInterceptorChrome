@@ -65,7 +65,7 @@ export default class MainForm extends React.Component {
                 <div className="buttons-section">
                     <button type="button" className="add-params-section btn btn-primary" onClick={this.addSection}>Add section</button>
                     <button type="button" className="remove-all-params btn btn-danger" onClick={this.removeAllSections}>Remove All Sections</button>
-                    <button type="button" className="remove-all-params btn btn-success float-right" onClick={this.saveSettings}>Save Settings</button>
+                    {/*<button type="button" className="remove-all-params btn btn-success float-right" onClick={this.saveSettings}>Save Settings</button>*/}
                 </div>
             </section>
         )
