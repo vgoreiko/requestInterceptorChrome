@@ -1,10 +1,6 @@
 /*global chrome*/
-import {Debuggee} from "./request-handler";
-
-export interface ContinueInterceptionOptions {
-    tabId: number,
-    interceptionId: number
-}
+import {Debuggee} from "./models/debuggee.model";
+import {ContinueInterceptionOptions} from "./models/continue-interception-options.model";
 
 export const urlPatterns = [{
     urlPattern: '*',

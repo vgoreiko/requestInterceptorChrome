@@ -1,40 +1,38 @@
-export interface Debuggee {
-    tabId?: number;
-    extensionId?: string;
-    targetId?: string;
-}
+import {NeedModificationOptions} from "./models/need-modification-options.model";
+import {NetworkEvent} from "./models/network-event.model";
 
-export interface NeedModificationOptions {
-    message: string,
-    params: any,
-    debuggeeId: Debuggee,
-    enabled: boolean,
-    requestUrls: string[],
-    tabId: number
-}
-
-export function isOptions(params: any) {
+export function isOptions(params: NetworkEvent ) {
     const isRequest = params.request;
-    const isResponse = params.response;
-    if (isRequest) {
+    if (isRequest && params.request) {
         return params.request.method === "OPTIONS"
-    } else if (isResponse) {
-        return params.response.method === "OPTIONS"
     }
     return false
 }
 
-export function getIsTrackedUrl(params: any, filterUrlValue: string[]) {
+export function getIsTrackedUrl(params: NetworkEvent, filterUrlValue: string[]) {
+    let url = '';
     const isRequest = params.request;
-    const toLowerCaseUrls = filterUrlValue.map(url => url.toLowerCase())
-    const url = isRequest ? params.request.url.toLowerCase() : params.response.url.toLowerCase()
-    const foundMatch = toLowerCaseUrls.some(function(v){return url.indexOf(v) > 0})
+    const toLowerCaseUrls = filterUrlValue.map(url => url
+        .replace('http://', '')
+        .replace('https://', '')
+        .toLowerCase())
+
+    if(isRequest && params.request){
+        url = params.request.url.toLowerCase()
+    } else if(params.response) {
+        url = params.response.url
+    }
+    url = url.toLowerCase()
+
+    const foundMatch = toLowerCaseUrls.some(function (v) {
+        return url.indexOf(v) > 0
+    })
     return foundMatch
 }
 
 export function isRequestModificationNeeded(options: NeedModificationOptions) {
     const isEnabledInterceptor = options.enabled
-    if(!isEnabledInterceptor) return false
+    if (!isEnabledInterceptor) return false
     const filterUrlValue = options.requestUrls
     const isNeededTab = (options.tabId === options.debuggeeId.tabId);
     const isTrackedUrl = getIsTrackedUrl(options.params, filterUrlValue);

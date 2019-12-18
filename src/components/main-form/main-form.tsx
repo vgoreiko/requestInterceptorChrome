@@ -5,7 +5,7 @@ import './main-form.css'
 import TopSection from "../top-section/top-section";
 import ParamsSection from "../params-section/Params-section";
 import FormState, {initState} from "./form-state.model";
-import {Debuggee, isRequestModificationNeeded} from "../../utils/request-handler";
+import {isRequestModificationNeeded} from "../../utils/request-handler";
 import {
     addEventListenerOnUnload,
     addEventListenersOnLoad,
@@ -14,6 +14,9 @@ import {
 } from "../../utils/chrome-facade";
 import {defaultParamsSection, ParamsSectionState} from "../params-section/params-section-props.model";
 import MainFormThead from "../main-form-thead/main-form-thead";
+import {Debuggee} from "../../utils/models/debuggee.model";
+import {Request} from "../../utils/models/request.model";
+import {NetworkEvent} from "../../utils/models/network-event.model";
 
 const saveStorageKey = 'requestInterceptorChromeStorage'
 
@@ -139,7 +142,7 @@ export default class MainForm extends React.Component {
         }
     }
 
-    onEvent = (debuggeeId: Debuggee, message: string, params: any) => {
+    onEvent = (debuggeeId: Debuggee, message: string, params: NetworkEvent) => {
         if(message === "Network.requestIntercepted"){
             this.onNetworkRequestIntercepted(message, params, debuggeeId)
         }
