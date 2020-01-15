@@ -15,5 +15,10 @@
   "browser_action": {
     "default_title": "CRM"
   },
+  "icons": {
+    "16": "icon128.png",
+    "48": "icon128.png",
+    "128": "icon128.png" },
+
   "manifest_version": 2
 }
